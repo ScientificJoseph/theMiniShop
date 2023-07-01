@@ -20,9 +20,10 @@ class ProductItem {
     render() {
         const prodEl = document.createElement('li');
         prodEl.className = 'product-item';
+        // this refers to the instance calling render() in productitem
         prodEl.innerHTML = `
             <div>
-                <img src='${this.product.imageUrl}' alt=${this.product.title}> // this refers to the instance calling render() in productitem
+                <img src='${this.product.imageUrl}' alt=${this.product.title}> 
                 <div class ='product-item__content'>
                     <h2>${this.product.title}</h2>
                     <h3>\$${this.product.price}</h3>
