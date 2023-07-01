@@ -1,17 +1,24 @@
+class Product {
+    title = 'DEFAULT';
+    imageUrl;
+    description;
+    price;
+
+    constructor(title, image, desc, price) { // Builds instane of Product from arguments received
+        this.title = title; // fields that are used to create properties for the instances of Product
+        this.imageUrl = image;
+        this.description = desc;
+        this.price = price;
+    }
+}
+
+
+const product = new Product()
+
 const productList = {
         products: [
-        {
-            title: 'A Pillow',
-            imageUrl: 'http://tiny.cc/en48vz',
-            price: 19.99,
-            description: 'The Pillow Of Manifestation'
-        },
-        {
-            title: 'A Rug',
-            imageUrl: 'http://tiny.cc/co48vz',
-            price: 89.99,
-            description: 'Like Walking On A Cloud'
-        }
+            new Product('A Pillow', 'http://tiny.cc/en48vz', 'The Pillow Of Manifestation', 9.99), //pases arguments to Product constructor to build instance of Product
+            new Product('A Rug', 'http://tiny.cc/co48vz', 'Like Walking On A cloud', 89.99)
     ],
     render() {
         const renderHook = document.getElementById('app');
@@ -37,5 +44,5 @@ const productList = {
     }
 };
 
-productList.render()
+productList.render();
 
