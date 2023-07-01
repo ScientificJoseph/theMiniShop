@@ -27,9 +27,9 @@ const productList = {
                         <h2>${prod.title}</h2>
                         <h3>\$${prod.price}</h3>
                         <p>${prod.description}</p>
+                        <button>Add To Cart</button>
                     </div>
                 </div>
-                
             `;
             prodList.append(prodEl);
         }
