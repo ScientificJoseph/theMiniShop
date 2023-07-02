@@ -12,7 +12,35 @@ class Product {
     }
 }
 
-class ShoppingCart { // template for object that holds props and methods for cart
+class ElementAttribute {
+    constructor(attrName, attrValue) { // store data recieved in properties
+        this.name = attrName;
+        this.value = attrValue
+    }
+}
+
+class Component { // created to output diferent components of web page
+    constructor(renderHookId) { // receives hrenderHookId from super constructor
+        this.hookId = renderHookId // property to store renderHookId
+    }
+    createRootElement(tag, cssClasses, attributes) { // attributes expected to be an array of objects created from Elementattribute
+        const rootElement = document.createElement(tag)
+        if (cssClasses) {
+            rootElement.className = cssClasses;
+        }
+        if(attributes && attributes.length > 0) {
+            for (const attr of attributes) {
+                rootElement.setAttribute(attr.name, attr.value); // used to set attributes on root element
+            }
+        }
+        document.getElementById(this.hookId).append(rootElement) // appends the created rootElemt to the id of the element rendered in the  web page
+        console.log(this.hookId, rootElement)
+        
+        return rootElement;
+    }
+}
+
+class ShoppingCart extends Component { // template for object that holds props and methods for cart
     items = [];
 
     set cartItems(value) { // value is an array of cart items
@@ -27,6 +55,10 @@ class ShoppingCart { // template for object that holds props and methods for car
         return sum;
     }
 
+    constructor(renderHookId) { // gets called on instantiation and from here parent constructor gets called - receives hookId on instantiation
+        super(renderHookId); // calls constructor in the parent class (Compnent) . passes renderHookId to Component
+    }
+
     addProduct(product) { // recieves product from method call in App
         // this.items.push(product) // pushes product on to items array
         const updatedItems = [...this.items]; // copies items array
@@ -35,14 +67,16 @@ class ShoppingCart { // template for object that holds props and methods for car
     }
 
     render() { 
-        const cartEl = document.createElement('section');
+        // const cartEl = document.createElement('section');
+        const cartEl = this.createRootElement('section', 'cart') //this refers to Component
         cartEl.innerHTML = `
             <h2>\$${0}</h2>
             <button>Order Now!</button>
         `;
-        cartEl.className = 'cart';
+
+       
+        // cartEl.className = 'cart';
         this.totalOutput = cartEl.querySelector('h2') //property added to ShoppingCart Class and instances. Store reference to h2 element
-        return cartEl;
     }
 }
 
@@ -103,12 +137,13 @@ class Shop { // created to build the template that combines the properties and m
         const renderHook = document.getElementById('app');
 
         // const cart = new ShoppingCart() // instance of ShoppingCart created (shop)
-        this.cart = new ShoppingCart() // instance of ShoppingCart created (shop). Becomes a porperty of Shop
-        const cartEl = this.cart.render() // calss render metod in cart instance that returns the cart Element (li)
+        this.cart = new ShoppingCart('app') // instance of ShoppingCart created (shop). Becomes a porperty of Shop. Pass app hook to constructor in shopping cart
+        // const cartEl = this.cart.render() // calss render metod in cart instance that returns the cart Element (li)
+        this.cart.render()
         const productList = new ProductList() // instance of ProductList created (productList)
         const prodListEl = productList.render() // calls render method in productList instance that returns the product list (ul)
 
-        renderHook.append(cartEl) // appends ShoppingCart to app hook 
+        // renderHook.append(cartEl) // appends ShoppingCart to app hook 
         renderHook.append(prodListEl) // appends ProductList cards to app hook
 
     }
