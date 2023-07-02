@@ -17,7 +17,7 @@ class ShoppingCart { // template for object that holds props and methods for car
 
     addProduct(product) { // recieves product
         this.items.push(product) // pushes product on to items array
-        this.totalOutput = `<h2>\$${1}</h2>`
+        this.totalOutput.innerHTML = `<h2>\$${1}</h2>` // overwrites previous value in the h2 element in ShoppingCart instance cart
     }
 
     render() { 
@@ -38,8 +38,7 @@ class ProductItem { //used to apply html to the properties received below when p
     }
 
     addToCart() { //function triggered by addCartButton used to tally item totals dispayed in cart
-        console.log('Adding Product To Cart...')
-        console.log(this.product)
+        App.addProductToCart(this.product) // call addProducttoCart in App class and passes product to it
     }
 
     render() {
@@ -89,8 +88,9 @@ class Shop { // created to build the template that combines the properties and m
     render() {
         const renderHook = document.getElementById('app');
 
-        const cart = new ShoppingCart() // instance of ShoppingCart created (shop)
-        const cartEl = cart.render() // calss render metod in cart instance that returns the cart Element (li)
+        // const cart = new ShoppingCart() // instance of ShoppingCart created (shop)
+        this.cart = new ShoppingCart() // instance of ShoppingCart created (shop). Becomes a porperty of Shop
+        const cartEl = this.cart.render() // calss render metod in cart instance that returns the cart Element (li)
         const productList = new ProductList() // instance of ProductList created (productList)
         const prodListEl = productList.render() // calls render method in productList instance that returns the product list (ul)
 
@@ -100,8 +100,23 @@ class Shop { // created to build the template that combines the properties and m
     }
 }
 
-const shop = new Shop() // instantiates shop
-shop.render() //calls render method in shop instance of Shop
+class App { // created to hold overall app. props and methods operate directly on the class, not an instance
+    static init() {
+        const shop = new Shop() // instantiates shop
+        shop.render() //calls render method in shop instance of Shop
+        this.cart = shop.cart // access to cart property in Shop class by referring to property on shop
+        
+    }
+
+    static addProductToCart(product) { // gets called in ProductItem class and receives product argument 
+        this.cart.addProduct(product) // receives product from call to addProductToCart from ProductItem and passes product to addProduct method in cart instance of ShoppingCart
+    }
+}
+
+App.init() // calls App to execute init method
+
+
+
 
 
 
