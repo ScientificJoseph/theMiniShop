@@ -15,13 +15,19 @@ class Product {
 class ShoppingCart { // template for object that holds props and methods for cart
     items = [];
 
-    render() {
+    addProduct(product) { // recieves product
+        this.items.push(product) // pushes product on to items array
+        this.totalOutput = `<h2>\$${1}</h2>`
+    }
+
+    render() { 
         const cartEl = document.createElement('section');
         cartEl.innerHTML = `
             <h2>\$${0}</h2>
             <button>Order Now!</button>
         `;
         cartEl.className = 'cart';
+        this.totalOutput = cartEl.querySelector('h2') //property added to ShoppingCart Class and instances. Store reference to h2 element
         return cartEl;
     }
 }
@@ -84,8 +90,8 @@ class Shop { // created to build the template that combines the properties and m
         const renderHook = document.getElementById('app');
 
         const cart = new ShoppingCart() // instance of ShoppingCart created (shop)
-        const cartEl = cart.render() // calss render metod in cart instance that returns the cart Element
-        const productList = new ProductList() // instance of ProductList created
+        const cartEl = cart.render() // calss render metod in cart instance that returns the cart Element (li)
+        const productList = new ProductList() // instance of ProductList created (productList)
         const prodListEl = productList.render() // calls render method in productList instance that returns the product list (ul)
 
         renderHook.append(cartEl) // appends ShoppingCart to app hook 
