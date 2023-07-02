@@ -86,10 +86,10 @@ class Shop { // created to build the template that combines the properties and m
         const cart = new ShoppingCart() // instance of ShoppingCart created (shop)
         const cartEl = cart.render() // calss render metod in cart instance that returns the cart Element
         const productList = new ProductList() // instance of ProductList created
-        const prodList = productList.render() // calls render method in productList instance that returns the product list (ul)
+        const prodListEl = productList.render() // calls render method in productList instance that returns the product list (ul)
 
         renderHook.append(cartEl) // appends ShoppingCart to app hook 
-        renderHook.append(prodList) // appends ProductList cards to app hook
+        renderHook.append(prodListEl) // appends ProductList cards to app hook
 
     }
 }
