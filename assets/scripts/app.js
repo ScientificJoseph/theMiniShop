@@ -15,7 +15,7 @@ class Product {
 class ShoppingCart { // template for object that holds props and methods for cart
     items = [];
 
-    addProduct(product) { // recieves product
+    addProduct(product) { // recieves product from method call in App
         this.items.push(product) // pushes product on to items array
         this.totalOutput.innerHTML = `<h2>\$${1}</h2>` // overwrites previous value in the h2 element in ShoppingCart instance cart
     }
