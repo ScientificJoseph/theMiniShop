@@ -15,9 +15,23 @@ class Product {
 class ShoppingCart { // template for object that holds props and methods for cart
     items = [];
 
+    set cartItems(value) { // value is an array of cart items
+        this.items = value; // overrides existing items array
+        this.totalOutput.innerHTML = `<h2>\$${this.totalAmount.toFixed(2)}</h2>` // calls totalAmount. overwrites previous value in the h2 element in ShoppingCart instance cart
+    }
+
+    get totalAmount() { // used to get cart total
+        const sum = this.items.reduce((prevValue, curItem) => {
+            return prevValue + curItem.price
+        },0);
+        return sum;
+    }
+
     addProduct(product) { // recieves product from method call in App
-        this.items.push(product) // pushes product on to items array
-        this.totalOutput.innerHTML = `<h2>\$${1}</h2>` // overwrites previous value in the h2 element in ShoppingCart instance cart
+        // this.items.push(product) // pushes product on to items array
+        const updatedItems = [...this.items]; // copies items array
+        updatedItems.push(product) //receives product from addProduct
+        this.cartItems = updatedItems; // triggers cartItems and provides product objects cartItems setter
     }
 
     render() { 
@@ -100,16 +114,18 @@ class Shop { // created to build the template that combines the properties and m
     }
 }
 
-class App { // created to hold overall app. props and methods operate directly on the class, not an instance
+class App { // created to hold overall app and allow classes to share data. props and methods operate directly on the class, not an instance therfore methods can be called globally
+    static cart;
+
     static init() {
         const shop = new Shop() // instantiates shop
         shop.render() //calls render method in shop instance of Shop
-        this.cart = shop.cart // access to cart property in Shop class by referring to property on shop
+        this.cart = shop.cart // access to ShoopinCart instance cart (has the method addProduct) in Shop class by referring to property on shop
         
     }
 
     static addProductToCart(product) { // gets called in ProductItem class and receives product argument 
-        this.cart.addProduct(product) // receives product from call to addProductToCart from ProductItem and passes product to addProduct method in cart instance of ShoppingCart
+        this.cart.addProduct(product) // receives product from the call to addProductToCart from instance of ProductItem and passes product to addProduct method in cart instance of ShoppingCart
     }
 }
 
