@@ -127,15 +127,16 @@ class ProductItem extends Component { //used to apply html to the properties rec
 }
 
 class ProductList extends Component { // used to build the objects that hold the props and methods used that append the product cards to the ul and app hook
-    products = []; // Product instanace properties initialized with arguments/values passed tp Product class below 
+    #products = []; // Product instanace properties initialized with arguments/values passed tp Product class below 
 
     constructor(renderHookId) {
-        super(renderHookId) //calls Component and passes app hookId app to Component for ul to append to
-        this.fetchProducts(); // fields created after call to super constuctor
+        super(renderHookId, false) //calls Component and passes app hookId app to Component for ul to append to
+        this.render()
+        this.#fetchProducts(); // fields created after call to super constuctor
     }
 
-    fetchProducts() {
-        this.products = [ // get created after super is executed
+    #fetchProducts() {
+        this.#products = [ // get created after super is executed
             new Product('A Pillow', 'http://tiny.cc/en48vz', 'The Pillow Of Manifestation', 9.99), //pases arguments to Product constructor to build instance of Product
             new Product('A Rug', 'http://tiny.cc/co48vz', 'Like Walking On A cloud', 89.99)
         ]
@@ -143,7 +144,7 @@ class ProductList extends Component { // used to build the objects that hold the
     }
 
     renderProducts() {
-        for (const prod of this.products){ // iterates through products array returning objects to prod
+        for (const prod of this.#products){ // iterates through products array returning objects to prod
             new ProductItem(prod, 'prod-list') // instantiates productItem with objects (prod) in products array. passes prod-list to constructor 
         }
 
@@ -151,7 +152,7 @@ class ProductList extends Component { // used to build the objects that hold the
 
     render() {
         this.createRootElement('ul', 'product-list', [new ElementAttribute('id', 'prod-list')]);
-        if (this.products && this.products.length > 0) { //fales on first pass. fetchProducts is then executed
+        if (this.#products && this.#products.length > 0) { //fales on first pass. fetchProducts is then executed
             this.renderProducts()
         }
     }
